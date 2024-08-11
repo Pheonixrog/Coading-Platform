@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Coding Playground</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/monokai.min.css">
+    <style>
+        body {
+            background: linear-gradient(45deg, #1a202c, #2d3748);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #cbd5e0;
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+        }
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        .input-data, .output, .notepad {
+            background-color: #242a36;
+            color: #cbd5e0;
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+        }
+        .input-data:focus, .notepad:focus {
+            background-color: #2d3748;
+            color: #edf2f7;
+        }
+        .output-section, .metrics {
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+        }
+        .output-section.hidden, .metrics.hidden {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .run-btn {
+            transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+        }
+        .run-btn:hover {
+            transform: scale(1.05);
+            background-color: #ecc94b;
+        }
+        pre[class*="language-"] {
+            background: #2d3748;
+            border-radius: 0.5rem;
+            padding: 1rem;
+        }
+        code[class*="language-"] {
+            background: transparent;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .zoom-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #cbd5e0;
+        }
+        .CodeMirror {
+            font-size: 16px; /* Increase font size */
+        }
+        .metrics div {
+            word-wrap: break-word;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/clike/clike.min.js"></script>
+</head>
+
+<body class="font-sans leading-normal tracking-normal">
+    <nav class="navbar fixed top-0 left-0 right-0 p-4 z-10 bg-gray-900 shadow-md">
+        <div class="flex justify-between items-center">
+            <div class="text-2xl text-yellow-500 font-bold"> <a>CodeMaster</a></div>
+            <ul class="hidden md:flex space-x-6">
+                <li><a href="Playground.html" class="hover:text-yellow-500 transition-colors duration-300">Playground</a></li>
+                <li><a href="ProblemPage.html" class="hover:text-yellow-500 transition-colors duration-300">Arena</a></li>
+                <li><a href="Context.html" class="hover:text-yellow-500 transition-colors duration-300">Battleground</a></li>
+            </ul>
+            <button class="mobile-menu-button md:hidden bg-yellow-500 text-gray-900 p-2 rounded-md">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <ul class="mobile-menu hidden md:hidden mt-4 space-y-4 bg-gray-900 p-4 rounded-md shadow-md">
+            <li><a href="Playground.html" class="block py-2 text-center hover:text-yellow-500 transition-colors duration-300">Playground</a></li>
+            <li><a href="ProblemPage.html" class="block py-2 text-center hover:text-yellow-500 transition-colors duration-300">Arena</a></li>
+            <li><a href="Context.html" class="block py-2 text-center hover:text-yellow-500 transition-colors duration-300">Battleground</a></li>
+        </ul>
+    </nav>
+
+    <script>
+        const mobileMenuButton = document.querySelector('.mobile-menu-button');
+        const mobileMenu = document.querySelector('.mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (event) => {
+            if (!mobileMenuButton.contains(event.target) && !mobileMenu.contains(event.target)) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+    </script>
+
+    <br>
+    <br>
+    <br>
+    <br>
+    
+    
+    <div class="container mx-auto mt-10">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-4xl text-yellow-500">Java Coding Playground</h1>
+            <button id="runCodeButton" class="run-btn bg-yellow-500 text-black px-4 py-2 rounded">Run Code</button>
+        </div>
+
+        <div class="flex mb-4">
+            <div class="w-2/3 pr-2">
+                <label for="javaCode" class="block text-gray-400">Java Code</label>
+
+                <textarea id="javaCode" class="hidden"></textarea>
+                <div id="javaCodeMirror" class="border rounded" style="height: 384px;"></div>
+                <div class="mb-4">
+                    <label for="inputData" class="block text-gray-400">Input (Optional)</label>
+                    <textarea id="inputData" class="input-data w-full p-2 border rounded" rows="3" placeholder="Enter input data here"></textarea>
+                </div>
+            </div>
+            <div class="w-1/3 pl-2">
+                <label for="notepad" class="block text-gray-400">Notepad</label>
+                <textarea id="notepad" class="notepad w-full p-2 border rounded" rows="20" placeholder="Write your thoughts and logic here"></textarea>
+            </div>
+        </div>
+
+        <div id="outputContainer" class="mt-6 hidden">
+            <div class="output-section hidden">
+                <h2 class="text-2xl mb-4 text-yellow-500">Output</h2>
+                <pre id="output" class="output p-4 border rounded overflow-auto"><code class="language-java"></code></pre>
+            </div>
+
+            <div class="metrics hidden mt-6">
+                <h2 class="text-2xl mb-4 text-yellow-500">Metrics</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="p-4 bg-gray-800 rounded">
+                        <h3 class="text-xl text-gray-300">Compile Time</h3>
+                        <p id="compileTime" class="text-lg text-yellow-500"></p>
+                    </div>
+                    <div class="p-4 bg-gray-800 rounded">
+                        <h3 class="text-xl text-gray-300">Execution Time</h3>
+                        <p id="executionTime" class="text-lg text-yellow-500"></p>
+                    </div>
+                    <div class="p-4 bg-gray-800 rounded">
+                        <h3 class="text-xl text-gray-300">Memory Usage</h3>
+                        <p id="memoryUsage" class="text-lg text-yellow-500"></p>
+                    </div>
+                    <div class="p-4 bg-gray-800 rounded">
+                        <h3 class="text-xl text-gray-300">Error</h3>
+                        <p id="error" class="text-lg text-red-500"></p>
+                    </div>
+                    <div class="p-4 bg-gray-800 rounded">
+                        <h3 class="text-xl text-gray-300">Detail</h3>
+                        <p id="detail" class="text-lg text-yellow-500"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <script>
+        // Initialize CodeMirror for the Java code textarea
+        const javaCodeMirror = CodeMirror(document.getElementById("javaCodeMirror"), {
+            value: '',
+            mode: "text/x-java",
+            theme: "monokai",
+            lineNumbers: true,
+            matchBrackets: true,
+            autoCloseBrackets: true,
+            indentUnit: 4,
+            tabSize: 4,
+            indentWithTabs: true
+        });
+
+        document.getElementById("runCodeButton").addEventListener("click", async () => {
+            const javaCode = javaCodeMirror.getValue();
+            const inputData = document.getElementById("inputData").value;
+
+            // Show the output container
+            const outputContainer = document.getElementById("outputContainer");
+            outputContainer.classList.remove("hidden");
+
+            const response = await fetch('http://127.0.0.1:8000/compile-and-run-java', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ java_code: javaCode, input_data: inputData })
+            });
+
+            const result = await response.json();
+            displayOutput(result);
+            displayMetrics(result);
+
+            // Apply animations
+            document.querySelectorAll('.output-section, .metrics').forEach(element => {
+                setTimeout(() => {
+                    element.classList.remove('hidden');
+                }, 100);
+            });
+
+            // Scroll to the bottom of the page
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        });
+
+        function displayOutput(result) {
+            const outputElement = document.getElementById("output").querySelector("code");
+            outputElement.textContent = result.output || "No output";
+            Prism.highlightElement(outputElement);
+        }
+
+        function displayMetrics(result) {
+            document.getElementById("compileTime").textContent = `${result.compileTime}s`;
+            document.getElementById("executionTime").textContent = `${result.executionTime}s`;
+            document.getElementById("memoryUsage").textContent = `${result.memoryUsage} bytes`;
+            document.getElementById("error").textContent = result.error || "None";
+            document.getElementById("detail").textContent = result.detail || "None";
+        }
+
+        document.getElementById("zoomRange").addEventListener("input", function() {
+            const zoomLevel = this.value;
+            document.getElementById("javaCodeMirror").style.zoom = `${zoomLevel}%`;
+        });
+    </script>
+    <style>
+        .CodeMirror {
+            height: 381px;
+        }
+        [role="presentation"] {
+            font-size: 22px;
+        }
+    </style>
+
+
+</body>
+</html>

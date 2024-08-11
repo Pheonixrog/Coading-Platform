@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coding Platform</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .button {
+            @apply py-2 px-4 font-semibold rounded-lg shadow-md;
+        }
+        .button-outline {
+            @apply border border-gray-700 text-gray-300 bg-gray-800 hover:bg-gray-700 transition-all duration-300;
+        }
+        .button-primary {
+            @apply bg-yellow-500 text-black hover:bg-yellow-600 transition-all duration-300;
+        }
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            aspect-ratio: 1/1;
+        }
+        .badge-secondary {
+            @apply bg-gray-700 text-gray-300 rounded-full px-2 py-1 text-xs font-semibold;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen bg-gray-900 text-gray-100">
+    <header class="sticky top-0 z-20 flex items-center justify-between h-16 px-4 border-b border-gray-700 bg-gray-800 md:px-6">
+        <a href="index.html" class="flex items-center gap-2 text-lg font-semibold text-yellow-500">
+            <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="16 18 22 12 16 6"></polyline>
+                <polyline points="8 6 2 12 8 18"></polyline>
+            </svg>
+            <span> Coding Platform</span>
+        </a>
+        <nav class="hidden gap-6 font-medium text-sm md:flex">
+            <a href="Playground.html" class="hover:text-yellow-500 transition-colors duration-300">Coding Playground</a>
+            <a href="ProblemPage.html" class="hover:text-yellow-500 transition-colors duration-300">Coding Arena</a>
+            <a href="Context.html" class="hover:text-yellow-500 transition-colors duration-300">Coding Battleground</a>
+        </nav>
+        <div class="flex items-center gap-4">
+            <button class="button button-outline rounded-full p-1">
+                
+                <span class="sr-only">Toggle user menu</span>
+                <div>
+
+                </div>
+            </button>
+        </div>
+    </header>
+    <main class="flex-1 grid gap-8 p-4 md:p-8">
+        <section class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <div class="card border p-4 rounded-lg bg-gray-800 shadow-md">
+                <div class="mb-4">
+                    <h3 class="text-xl font-semibold text-yellow-500">Coding Playground</h3>
+                    <p class="text-gray-400">Write, execute, and analyze your code in a powerful editor.</p>
+                </div>
+                <div class="grid gap-4">
+                    <div class="flex items-center justify-between">
+                        <div class="text-lg font-medium">Code Editor</div>
+                        <button class="button button-outline">Open</button>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="text-lg font-medium">Code Execution</div>
+                        <button class="button button-outline">Run</button>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="text-lg font-medium">Performance Metrics</div>
+                        <button class="button button-outline">View</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card border p-4 rounded-lg bg-gray-800 shadow-md">
+                <div class="mb-4">
+                    <h3 class="text-xl font-semibold text-yellow-500">Coding Arena</h3>
+                    <p class="text-gray-400">Solve coding problems and showcase your skills.</p>
+                </div>
+                <div class="grid gap-4">
+                    <div class="flex items-center justify-between">
+                        <div class="text-lg font-medium">Problem Sets</div>
+                        <button class="button button-outline">Explore</button>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="text-lg font-medium">Submit Solutions</div>
+                        <button class="button button-outline">Upload</button>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="text-lg font-medium">Leaderboard</div>
+                        <button class="button button-outline">View</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card border p-4 rounded-lg bg-gray-800 shadow-md">
+                <div class="mb-4">
+                    <h3 class="text-xl font-semibold text-yellow-500">Coding Battleground</h3>
+                    <p class="text-gray-400">Compete in coding contests and climb the leaderboard.</p>
+                </div>
+                <div class="grid gap-4">
+                    <div class="flex items-center justify-between">
+                        <div class="text-lg font-medium">Ongoing Contests</div>
+                        <button class="button button-outline">Join</button>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="text-lg font-medium">Host a Contest</div>
+                        <button class="button button-outline">Create</button>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="text-lg font-medium">Leaderboard</div>
+                        <button class="button button-outline">View</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <div class="card border p-4 rounded-lg bg-gray-800 shadow-md">
+                <div class="mb-4">
+                    <h3 class="text-xl font-semibold text-yellow-500">Featured Problem Sets</h3>
+                    <p class="text-gray-400">Solve the latest coding challenges and improve your skills.</p>
+                </div>
+                <div class="grid gap-4">
+                    <a href="#" class="flex items-center justify-between p-4 rounded-md bg-gray-700 hover:bg-gray-600 transition-all duration-300">
+                        <div>
+                            <div class="text-lg font-medium">Reverse a Linked List</div>
+                            <div class="text-sm text-gray-400">Difficulty: Medium</div>
+                        </div>
+                        <button class="button button-outline">Solve</button>
+                    </a>
+                    <a href="#" class="flex items-center justify-between p-4 rounded-md bg-gray-700 hover:bg-gray-600 transition-all duration-300">
+                        <div>
+                            <div class="text-lg font-medium">Implement a Binary Search Tree</div>
+                            <div class="text-sm text-gray-400">Difficulty: Hard</div>
+                        </div>
+                        <button class="button button-outline">Solve</button>
+                    </a>
+                    <a href="#" class="flex items-center justify-between p-4 rounded-md bg-gray-700 hover:bg-gray-600 transition-all duration-300">
+                        <div>
+                            <div class="text-lg font-medium">Find the Longest Palindromic Substring</div>
+                            <div class="text-sm text-gray-400">Difficulty: Medium</div>
+                        </div>
+                        <button class="button button-outline">Solve</button>
+                    </a>
+                </div>
+            </div>
+            <div class="card border p-4 rounded-lg bg-gray-800 shadow-md">
+                <div class="mb-4">
+                    <h3 class="text-xl font-semibold text-yellow-500">Upcoming Coding Contests</h3>
+                    <p class="text-gray-400">Join the competition and showcase your coding skills.</p>
+                </div>
+                <div class="grid gap-4">
+                    <a href="#" class="flex items-center justify-between p-4 rounded-md bg-gray-700 hover:bg-gray-600 transition-all duration-300">
+                        <div>
+                            <div class="text-lg font-medium">Hackathon: Build a Web App</div>
+                            <div class="text-sm text-gray-400">Start: August 15, 2023</div>
+                        </div>
+                        <button class="button button-outline">Join</button>
+                    </a>
+                    <a href="#" class="flex items-center justify-between p-4 rounded-md bg-gray-700 hover:bg-gray-600 transition-all duration-300">
+                        <div>
+                            <div class="text-lg font-medium">Algorithm Challenge: Sorting Algorithms</div>
+                            <div class="text-sm text-gray-400">Start: September 1, 2023</div>
+                        </div>
+                        <button class="button button-outline">Join</button>
+                    </a>
+                    <a href="#" class="flex items-center justify-between p-4 rounded-md bg-gray-700 hover:bg-gray-600 transition-all duration-300">
+                        <div>
+                            <div class="text-lg font-medium">Data Structures Showdown</div>
+                            <div class="text-sm text-gray-400">Start: October 1, 2023</div>
+                        </div>
+                        <button class="button button-outline">Join</button>
+                    </a>
+                </div>
+            </div>
+            <div class="card border p-4 rounded-lg bg-gray-800 shadow-md">
+                <div class="mb-4">
+                    <h3 class="text-xl font-semibold text-yellow-500">Leaderboard</h3>
+                    <p class="text-gray-400">See who's leading the way in our coding challenges.</p>
+                </div>
+                <div class="grid gap-4">
+                    <div class="flex items-center justify-between p-4 rounded-md bg-gray-700">
+                        <div class="flex items-center gap-4">
+                            <img src="/placeholder-user.jpg" alt="@iamwillpursell" class="avatar border-gray-700">
+                            <div>
+                                <div class="text-lg font-medium">@iamwillpursell</div>
+                                <div class="text-sm text-gray-400">Points: 5,000</div>
+                            </div>
+                        </div>
+                        <span class="badge-secondary">1</span>
+                    </div>
+                    <div class="flex items-center justify-between p-4 rounded-md bg-gray-700">
+                        <div class="flex items-center gap-4">
+                            <img src="/placeholder-user.jpg" alt="@HackSoft" class="avatar border-gray-700">
+                            <div>
+                                <div class="text-lg font-medium">@HackSoft</div>
+                                <div class="text-sm text-gray-400">Points: 4,500</div>
+                            </div>
+                        </div>
+                        <span class="badge-secondary">2</span>
+                    </div>
+                    <div class="flex items-center justify-between p-4 rounded-md bg-gray-700">
+                        <div class="flex items-center gap-4">
+                            <img src="/placeholder-user.jpg" alt="@greed7513" class="avatar border-gray-700">
+                            <div>
+                                <div class="text-lg font-medium">@greed7513</div>
+                                <div class="text-sm text-gray-400">Points: 4,000</div>
+                            </div>
+                        </div>
+                        <span class="badge-secondary">3</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="flex items-center justify-between h-16 px-4 border-t border-gray-700 bg-gray-800 text-gray-400 md:px-6">
+        <div class="text-sm">&copy; 2024 Coding Platform. All rights reserved.</div>
+        <div class="flex items-center gap-4">
+            <a href="#" class="hover:text-yellow-500 transition-colors duration-300">About</a>
+            <a href="#" class="hover:text-yellow-500 transition-colors duration-300">Contact</a>
+            <a href="#" class="hover:text-yellow-500 transition-colors duration-300">Terms</a>
+            <a href="#" class="hover:text-yellow-500 transition-colors duration-300">Privacy</a>
+        </div>
+    </footer>
+</body>
+</html>
