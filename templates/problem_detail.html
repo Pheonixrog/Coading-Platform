@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problem Detail</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/monokai.min.css">
+    <style>
+        body {
+            background: linear-gradient(45deg, #1a202c, #2d3748);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #cbd5e0;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .CodeMirror {
+            height: 300px;
+        }
+    </style>
+</head>
+
+<body class="font-sans leading-normal tracking-normal">
+    <nav class="navbar fixed top-0 left-0 right-0 p-4 z-10 bg-gray-900 shadow-md">
+        <div class="flex justify-between items-center">
+            <div class="text-2xl text-yellow-500 font-bold"><a href="/index.html">CodeMaster</a></div>
+            <ul class="hidden md:flex space-x-6">
+                <li><a href="/playground" class="hover:text-yellow-500 transition-colors duration-300">Playground</a></li>
+                <li><a href="/problems" class="hover:text-yellow-500 transition-colors duration-300">Arena</a></li>
+                <li><a href="/context" class="hover:text-yellow-500 transition-colors duration-300">Battleground</a></li>
+                <li><a href="/leaderboard" class="hover:text-yellow-500 transition-colors duration-300">Leaderboard</a></li>
+
+            </ul>
+            <button class="mobile-menu-button md:hidden bg-yellow-500 text-gray-900 p-2 rounded-md">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <ul class="mobile-menu hidden md:hidden mt-4 space-y-4 bg-gray-900 p-4 rounded-md shadow-md">
+            <li><a href="/playground" class="block py-2 text-center hover:text-yellow-500 transition-colors duration-300">Playground</a></li>
+            <li><a href="/problems" class="block py-2 text-center hover:text-yellow-500 transition-colors duration-300">Arena</a></li>
+            <li><a href="/context" class="block py-2 text-center hover:text-yellow-500 transition-colors duration-300">Battleground</a></li>
+        </ul>
+    </nav>
+
+    <div class="container mx-auto mt-20 p-6 bg-gray-800 rounded shadow">
+        <h1 class="text-4xl text-yellow-500 mb-4">{{ problem.name }}</h1>
+        <p class="text-xl text-gray-300 mb-4">{{ problem.description }}</p>
+        <p class="text-lg text-gray-400 mb-4">Difficulty: {{ problem.difficulty }}</p>
+        <p class="text-lg text-gray-400 mb-4">Constraints: {{ problem.constraints }}</p>
+        <div class="mb-4">
+            <h2 class="text-2xl text-yellow-500 mb-2">Sample Inputs</h2>
+            <pre class="bg-gray-900 p-4 rounded">{{ problem.sample_inputs | join('\n') }}</pre>
+        </div>
+        <div class="mb-4">
+            <h2 class="text-2xl text-yellow-500 mb-2">Sample Outputs</h2>
+            <pre class="bg-gray-900 p-4 rounded">{{ problem.sample_outputs | join('\n') }}</pre>
+        </div>
+
+        <h2 class="text-2xl text-yellow-500 mb-4">Submit Your Solution</h2>
+        <div class="mb-4">
+            <label for="solutionCode" class="block text-gray-400 mb-2">Solution Code</label>
+            <textarea id="solutionCode" class="hidden"></textarea>
+            <div id="solutionCodeMirror" class="border rounded" style="height: 300px;"></div>
+        </div>
+        <div class="mb-4">
+            <label for="inputData" class="block text-gray-400 mb-2">Input Data (Optional)</label>
+            <textarea id="inputData" class="w-full p-2 border rounded" rows="3" placeholder="Enter input data here"></textarea>
+        </div>
+        <button id="submitSolutionButton" class="bg-yellow-500 text-black px-4 py-2 rounded">Submit Solution</button>
+        <div id="submissionResult" class="mt-4"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/clike/clike.min.js"></script>
+    <script>
+        const solutionCodeMirror = CodeMirror(document.getElementById("solutionCodeMirror"), {
+            value: '',
+            mode: "text/x-java",
+            theme: "monokai",
+            lineNumbers: true,
+            matchBrackets: true,
+            autoCloseBrackets: true,
+            indentUnit: 4,
+            tabSize: 4,
+            indentWithTabs: true
+        });
+
+        document.getElementById("submitSolutionButton").addEventListener("click", async () => {
+            const solutionCode = solutionCodeMirror.getValue();
+            const inputData = document.getElementById("inputData").value;
+            const problemId = "{{ problem._id }}";
+
+            const response = await fetch('/submit-solution', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ solution_code: solutionCode, input_data: inputData, problem_id: problemId })
+            });
+
+            const result = await response.json();
+            const submissionResult = document.getElementById("submissionResult");
+            if (result.success) {
+                submissionResult.innerHTML = `<p class="text-green-500">${result.message}</p>`;
+            } else {
+                submissionResult.innerHTML = `<p class="text-red-500">${result.message}</p>`;
+            }
+        });
+    </script>
+</body>
+
+</html>

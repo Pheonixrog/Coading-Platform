@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(45deg, #1a202c, #2d3748);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #cbd5e0;
+        }
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .table-header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 10px;
+        }
+        .table-row {
+            transition: background-color 0.3s ease-in-out;
+        }
+        .table-row:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+
+<body class="font-sans leading-normal tracking-normal">
+    <nav class="navbar fixed top-0 left-0 right-0 p-4 z-10 bg-gray-900 shadow-md">
+        <div class="flex justify-between items-center">
+            <div class="text-2xl text-yellow-500 font-bold">CodeMaster</div>
+            <ul class="hidden md:flex space-x-6">
+                <li><a href="/playground" class="hover:text-yellow-500 transition-colors duration-300">Playground</a></li>
+                <li><a href="/problems" class="hover:text-yellow-500 transition-colors duration-300">Arena</a></li>
+                <li><a href="/context" class="hover:text-yellow-500 transition-colors duration-300">Battleground</a></li>
+                <li><a href="/leaderboard" class="hover:text-yellow-500 transition-colors duration-300">Leaderboard</a></li>
+            </ul>
+            <button class="mobile-menu-button md:hidden bg-yellow-500 text-gray-900 p-2 rounded-md">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <ul class="mobile-menu hidden md:hidden mt-4 space-y-4 bg-gray-900 p-4 rounded-md shadow-md">
+            <li><a href="/playground" class="block py-2 text-center hover:text-yellow-500 transition-colors duration-300">Playground</a></li>
+            <li><a href="/problems" class="block py-2 text-center hover:text-yellow-500 transition-colors duration-300">Arena</a></li>
+            <li><a href="/context" class="block py-2 text-center hover:text-yellow-500 transition-colors duration-300">Battleground</a></li>
+            <li><a href="/leaderboard" class="block py-2 text-center hover:text-yellow-500 transition-colors duration-300">Leaderboard</a></li>
+        </ul>
+    </nav>
+
+    <script>
+        const mobileMenuButton = document.querySelector('.mobile-menu-button');
+        const mobileMenu = document.querySelector('.mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (event) => {
+            if (!mobileMenuButton.contains(event.target) && !mobileMenu.contains(event.target)) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+    </script>
+
+    <div class="container mx-auto mt-20 max-w-7xl">
+        <h1 class="text-4xl text-yellow-500 mb-6">Leaderboard</h1>
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-gray-800 rounded-lg">
+                <thead class="table-header">
+                    <tr>
+                        <th class="py-2 px-4 text-left text-yellow-500">Rank</th>
+                        <th class="py-2 px-4 text-left text-yellow-500">Username</th>
+                        <th class="py-2 px-4 text-left text-yellow-500">Points</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboard" class="table-body">
+                    <!-- Leaderboard data will be populated here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        async function fetchLeaderboard() {
+            const response = await fetch('/get-leaderboard');
+            const leaderboard = await response.json();
+            displayLeaderboard(leaderboard);
+        }
+
+        function displayLeaderboard(leaderboard) {
+            const leaderboardTable = document.getElementById('leaderboard');
+            leaderboardTable.innerHTML = '';
+
+            leaderboard.forEach((user, index) => {
+                const row = document.createElement('tr');
+                row.className = 'table-row';
+                row.innerHTML = `
+                    <td class="py-2 px-4">${index + 1}</td>
+                    <td class="py-2 px-4">${user.username}</td>
+                    <td class="py-2 px-4">${user.points}</td>
+                `;
+                leaderboardTable.appendChild(row);
+            });
+        }
+
+        // Fetch leaderboard data on page load
+        fetchLeaderboard();
+    </script>
+</body>
+</html>

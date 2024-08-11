@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problems List</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(45deg, #1a202c, #2d3748);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #cbd5e0;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+    </style>
+</head>
+
+<body class="font-sans leading-normal tracking-normal">
+    <nav class="navbar fixed top-0 left-0 right-0 p-4 z-10 bg-gray-900 shadow-md">
+        <div class="flex justify-between items-center">
+            <div class="text-2xl text-yellow-500 font-bold"><a href="/index.html">CodeMaster</a></div>
+            <ul class="hidden md:flex space-x-6">
+                <li><a href="/playground" class="hover:text-yellow-500 transition-colors duration-300">Playground</a></li>
+                <li><a href="/problems" class="hover:text-yellow-500 transition-colors duration-300">Arena</a></li>
+                <li><a href="/context" class="hover:text-yellow-500 transition-colors duration-300">Battleground</a></li>
+                <li><a href="/leaderboard" class="hover:text-yellow-500 transition-colors duration-300">Leaderboard</a></li>
+
+            </ul>
+            <button class="mobile-menu-button md:hidden bg-yellow-500 text-gray-900 p-2 rounded-md">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <ul class="mobile-menu hidden md:hidden mt-4 space-y-4 bg-gray-900 p-4 rounded-md shadow-md">
+            <li><a href="/playground" class="block py-2 text-center hover:text-yellow-500 transition-colors duration-300">Playground</a></li>
+            <li><a href="/problems" class="block py-2 text-center hover:text-yellow-500 transition-colors duration-300">Arena</a></li>
+            <li><a href="/context" class="block py-2 text-center hover:text-yellow-500 transition-colors duration-300">Battleground</a></li>
+        </ul>
+    </nav>
+
+    <div class="container mx-auto mt-20 p-6 bg-gray-800 rounded shadow">
+        <h1 class="text-4xl text-yellow-500 mb-6">Problems List</h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for problem in problems %}
+            <div class="p-4 bg-gray-900 rounded shadow">
+                <h2 class="text-2xl text-yellow-500 mb-2">{{ problem.name }}</h2>
+                <p class="text-gray-300 mb-2">{{ problem.description }}</p>
+                <p class="text-gray-500 mb-4">Difficulty: {{ problem.difficulty }}</p>
+                <a href="/problems/{{ problem.name }}" class="bg-yellow-500 text-black px-4 py-2 rounded">Solve Problem</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+
+</html>
